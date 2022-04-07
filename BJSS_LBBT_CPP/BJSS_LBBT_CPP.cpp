@@ -1,20 +1,47 @@
-// BJSS_LBBT_CPP.cpp : This file contains the 'main' function. Program execution begins and ends there.
+//
+//  main.cpp
+//  BJJS lbbt
+//
+//  Created by Michal Sakowski on 01/04/2022.
 //
 
 #include <iostream>
+#include "TaxCalculator.h"
 
-int main()
+
+    
+    TaxCalculator::TaxCalculator(int32_t houseValue_)
+    {
+        this->houseValue = houseValue_;
+    }
+
+    int32_t TaxCalculator::getTax()
+    {
+        double lbbt = 0;
+        int32_t taxAtThisBracket = 0;
+
+        for (std::size_t i = 0; i < bracket.size(); i++)
+        {
+            if (houseValue > bracket[i].min)
+            {
+                if ((bracket[i].max - bracket[i].min) < (houseValue - bracket[i].min))
+                    taxAtThisBracket = (bracket[i].max - bracket[i].min);
+                else
+                    taxAtThisBracket = houseValue - bracket[i].min;
+
+                lbbt += taxAtThisBracket * bracket[i].rate;
+            }
+        }
+        return static_cast<int>(lbbt);
+    }
+
+
+
+int main(int argc, const char* argv[]) 
 {
-    std::cout << "Hello World!\n";
+    TaxCalculator tax1(300000);
+    std::cout << tax1.getTax() << std::endl;
+
+
+    return 0;
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
